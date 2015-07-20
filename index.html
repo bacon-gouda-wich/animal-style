@@ -5,18 +5,29 @@
 		<meta charset="utf-8" />
 		<title>Animal Style</title>
 
-		<script type="text/javascript" src="js/phaser.js"></script>
+		<script type="text/javascript" src="src/phaser.js"></script>
+		<script src="src/Boot.js"></script>
+		<script src="src/Preloader.js"></script>
+		<script src="src/Game.js"></script>
 
 		<style>
 		  body {
 		    padding: 0px;
 		    margin: 0px;
+			background: #000;
 		  }
 		</style>
 	</head>
 
 	<body>  
-		<!-- include the main game file -->
-		<script src="js/main.js"></script>
+		<script>
+		(function() {
+			var game = new Phaser.Game(800, 600, Phaser.AUTO, '');
+			game.state.add('Boot', Animal.Boot);
+			game.state.add('Preloader', Animal.Preloader);
+			game.state.add('Game', Animal.Game);
+			game.state.start('Boot');
+		})();
+		</script>
 	</body>
 </html>
