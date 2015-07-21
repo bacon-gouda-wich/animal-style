@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="64" tileheight="64" backgroundcolor="#0bc6ff" nextobjectid="20">
+ <tileset firstgid="1" name="Tiles_32x32" tilewidth="32" tileheight="32">
+  <image source="PlatformTiles/Tiles 32x32/Tiles_32x32.png" width="256" height="256"/>
+ </tileset>
+ <tileset firstgid="65" name="Tiles_64x64" tilewidth="64" tileheight="64">
+  <image source="Tiles_64x64.png" width="512" height="512"/>
+ </tileset>
+ <layer name="World1" width="50" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzdlmEOgjAMhXs1VNwFUKP+MPEGmmiiiXh1u4TFpbLRdVWGL/kSYMD6ukJXA0D9J0xdzscB2Y0cS478NXlAuX5uyIxcMx1WzsNGSNXhzp+KsV+QK7JHWqRBtvDOc58PqRbIUvjsGuT5o4zpQ1OpPmgOU+pSs+aoQj7m8PldlayQj1LqhatQXfjXv1EPtD5z59Du533/II082P6xioxPYV9iPdj+Yft0yAvXhxm+RU3cvuKvc4qPX3pJlXRfEqp5t5eoGMTqXeojVy7+1nvnELF6T1WuD278xjs+kzHO2sW4Z/gIxX/yjpvIfFKOA+N0zpQclMIL9MVv6Q==
+  </data>
+ </layer>
+ <layer name="Background1" width="50" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2BgQD4UkwPSgDiDim4ZjIDcsBkFxINYJDwK6AsioJgeAFReZAJxDgP+cgNXnqNV+hjuaS+bgXrlNDHpZSTUC9QCuNLdSKh3qFnuj4TwGgUjE+CrD4dzvTVYAAAcEwzY
+  </data>
+ </layer>
+ <objectgroup name="Collision">
+  <object id="10" x="2942" y="190" width="132" height="130"/>
+  <object id="11" x="1216" y="702" width="382" height="64"/>
+  <object id="12" x="1856" y="640" width="320" height="64"/>
+  <object id="13" x="1442" y="1146">
+   <polyline points="0,0 158,2 156,-60 224,-60 226,2 252,2"/>
+  </object>
+  <object id="14" x="2302" y="830">
+   <polyline points="0,0 258,2 386,-126 512,2 706,2 708,68 0,64 0,2"/>
+  </object>
+  <object id="15" x="64" y="1024">
+   <polyline points="0,0 2,190 766,190 1280,-64 1854,-66 1984,62 3066,60 3068,-638 1852,-638 1854,-706 2366,-706 2494,-770 2564,-770 2630,-836 2690,-836 2690,-774 2818,-704 2880,-704"/>
+  </object>
+  <object id="16" x="62" y="1022">
+   <polyline points="0,0 836,2 836,-60 642,-62 642,-128 576,-130 578,-192 512,-192 510,-62 2,-62 2,-320 516,-318 514,-384 384,-384 386,-512 256,-510 254,-378 2,-380 4,-702 896,-700 896,-576 636,-574 642,-508 1668,-510 1668,-578 1028,-576 1028,-706 1222,-706 1220,-768 254,-770 2,-894 4,-958 3070,-958 3070,-702 3016,-704"/>
+  </object>
+  <object id="17" x="62" y="254">
+   <polyline points="0,0 256,2"/>
+  </object>
+  <object id="18" x="2440" y="314">
+   <polyline points="0,0 430,2"/>
+  </object>
+  <object id="19" x="2564" y="832">
+   <polyline points="0,0 248,0"/>
+  </object>
+ </objectgroup>
+</map>

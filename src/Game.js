@@ -1,5 +1,6 @@
 Animal.Game = function(game) {
-	this.platforms = null;
+	this.map = null;
+	this.layer = null;
 	this.player = null;
 	this.count = 0;
 	this.enemies = null;
@@ -18,40 +19,31 @@ Animal.Game.prototype = {
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
 		
 		// Simple background
-		this.game.add.sprite(0,  0, 'sky');
+		this.game.stage.backgroundColor = '#33ccff';
 		
-		// Platform group contains the ground and two ledges
-		this.platforms = this.game.add.group();
-
-		// Enable physics for any objects created in the platform group
-		this.platforms.enableBody = true;
+		this.map = this.game.add.tilemap('world1');
+		this.map.addTilesetImage('Tiles_64x64');
 		
-		// Create the ground, scale to fit the width of the game, and make it immovable
-		this.ground = this.platforms.create(0, this.game.world.height - 64, 'ground');
-		this.ground.scale.setTo(2, 2);
-		this.ground.body.immovable = true;
+		this.layer = this.map.createLayer('Background1');
+		this.layer = this.map.createLayer('World1');
 		
-		// Create the ledges
-		this.ledge = this.platforms.create(400, 400, 'ground');
-		this.ledge.body.immovable = true;
+		this.map.setCollisionBetween(1, 2000, true, 'World1');
 		
-		this.ledge = this.platforms.create(-150, 250, 'ground');
-		this.ledge.body.immovable = true;
-		
-		this.ledge = this.platforms.create(300, 100, 'ground');
-		this.ledge.body.immovable = true;
+		this.layer.resizeWorld();
+		this.layer.debug = true;
 		
 		
 		/* ---------- Player set-up ---------- */
 		
 		// The player and its settings
-		this.player = this.game.add.sprite(32, this.game.world.height - 150, 'dude');
+		this.player = this.game.add.sprite(128, this.game.world.height - 150, 'dude');
 		
 		// Enable physics for the player
 		this.game.physics.arcade.enable(this.player);
 		
 		// Player physics properties
 		this.player.body.bounce.y = 0.2;
+		this.player.body.tilePadding.set(32);
 		this.player.body.gravity.y = 300;
 		this.player.body.collideWorldBounds = true;
 		
@@ -60,8 +52,10 @@ Animal.Game.prototype = {
 		this.player.animations.add('left',  [0, 1, 2, 3], 10, true);
 		this.player.animations.add('right', [5, 6, 7, 8], 10, true);
 		
+		// Follow the character
+		this.game.camera.follow(this.player);
 		
-		// Number of enemies / items (what they follow)
+		// Number of enemies & items
 		this.count = 3;
 		
 		/* ---------- Enemy set-up ---------- */
@@ -71,6 +65,7 @@ Animal.Game.prototype = {
 		for (var i = 0; i < this.count; ++i) {
 			this.enemy = this.enemies.create(this.game.world.randomX, this.game.world.randomY - 150, 'baddie');
 			this.enemy.body.bounce.y = 0.2;
+			this.enemy.body.tilePadding.set(32);
 			this.enemy.body.gravity.y = 300;
 		}
 		
@@ -79,10 +74,10 @@ Animal.Game.prototype = {
 		this.items = this.game.add.group();
 		this.items.enableBody = true;
 		
-		// Create 12, evenly spaced out (70px apart)
 		for (var i = 0; i < this.count; ++i) {
 			this.item = this.items.create(this.game.world.randomX, this.game.world.randomY - 150, 'star');
 			this.item.body.gravity.y = 300;
+			this.item.body.tilePadding.set(32);
 			this.item.body.bounce.y = 0.7 + Math.random() * 0.2;
 		}
 	},
@@ -94,9 +89,9 @@ Animal.Game.prototype = {
 	update: function() {
 		
 		// Collide the player and items with the platform
-		this.game.physics.arcade.collide(this.player, this.platforms);
-		this.game.physics.arcade.collide(this.enemies, this.platforms);
-		this.game.physics.arcade.collide(this.items, this.platforms);
+		this.game.physics.arcade.collide(this.player, this.layer);
+		this.game.physics.arcade.collide(this.enemies, this.layer);
+		this.game.physics.arcade.collide(this.items, this.layer);
 		
 		// Check overlap between player and item
 		this.game.physics.arcade.overlap(this.player, this.enemies, Animal.action.tagEnemy, null, this);
@@ -134,9 +129,9 @@ Animal.Game.prototype = {
 		}
 		
 		// Jump, only if the player is touching the ground
-		if (this.player.body.touching.down && (cursors.up.isDown || wasd.up.isDown)) {
+		if (this.player.body.onFloor() && (cursors.up.isDown || wasd.up.isDown)) {
 			// Vertical velocity: 350px/sec sq
-			this.player.body.velocity.y = -350;
+			this.player.body.velocity.y = -450;
 		}
 	}	
 };
