@@ -27,7 +27,7 @@ Animal.Game.prototype = {
 		this.layer = this.map.createLayer('Background1');
 		this.layer = this.map.createLayer('World1');
 		
-		this.map.setCollisionBetween(1, 2000, true, 'World1');
+		this.map.setCollisionBetween(1, 63, true, 'World1');
 		
 		this.layer.resizeWorld();
 		this.layer.debug = true;
@@ -36,21 +36,22 @@ Animal.Game.prototype = {
 		/* ---------- Player set-up ---------- */
 		
 		// The player and its settings
-		this.player = this.game.add.sprite(128, this.game.world.height - 150, 'dude');
+		this.player = this.game.add.sprite(128, this.game.world.height - 150, 'sheep');
 		
 		// Enable physics for the player
 		this.game.physics.arcade.enable(this.player);
 		
 		// Player physics properties
 		this.player.body.bounce.y = 0.2;
-		this.player.body.tilePadding.set(32);
 		this.player.body.gravity.y = 300;
 		this.player.body.collideWorldBounds = true;
 		
 		// Walk left and right
 		// Parameters: .add('name', [frame #], frames/sec, loop])
-		this.player.animations.add('left',  [0, 1, 2, 3], 10, true);
-		this.player.animations.add('right', [5, 6, 7, 8], 10, true);
+		this.player.animations.add('left',  [11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0], 10, true);
+		this.player.animations.add('right', [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23], 10, true);
+		this.player.animations.add('jumpLeft', [28, 29, 30, 31, 32], 20, false);
+		this.player.animations.add('jumpRight', [38, 37, 36, 35, 34], 20, false);
 		
 		// Follow the character
 		this.game.camera.follow(this.player);
@@ -65,7 +66,6 @@ Animal.Game.prototype = {
 		for (var i = 0; i < this.count; ++i) {
 			this.enemy = this.enemies.create(this.game.world.randomX, this.game.world.randomY - 150, 'baddie');
 			this.enemy.body.bounce.y = 0.2;
-			this.enemy.body.tilePadding.set(32);
 			this.enemy.body.gravity.y = 300;
 		}
 		
@@ -77,7 +77,6 @@ Animal.Game.prototype = {
 		for (var i = 0; i < this.count; ++i) {
 			this.item = this.items.create(this.game.world.randomX, this.game.world.randomY - 150, 'star');
 			this.item.body.gravity.y = 300;
-			this.item.body.tilePadding.set(32);
 			this.item.body.bounce.y = 0.7 + Math.random() * 0.2;
 		}
 	},
@@ -112,26 +111,38 @@ Animal.Game.prototype = {
 		
 		// Move left
 		if (cursors.left.isDown || wasd.left.isDown) {
-			this.player.body.velocity.x = -150;
-			this.player.animations.play('left');
+			this.player.body.velocity.x = -250;
+			if (this.player.body.onFloor()) {
+				this.player.animations.play('left');
+			}
 		}
 		
 		// Move right
 		else if (cursors.right.isDown || wasd.right.isDown) {
-			this.player.body.velocity.x = 150;
-			this.player.animations.play('right');
+			this.player.body.velocity.x = 250;
+			if (this.player.body.onFloor()) {
+				this.player.animations.play('right');
+			}
 		}
 		
 		// Stand still
 		else {
 			this.player.animations.stop();
-			this.player.frame = 4;
+			this.player.frame = 26;
 		}
 		
 		// Jump, only if the player is touching the ground
 		if (this.player.body.onFloor() && (cursors.up.isDown || wasd.up.isDown)) {
 			// Vertical velocity: 350px/sec sq
 			this.player.body.velocity.y = -450;
+			
+			if (this.player.body.velocity.x < 0) {
+				this.player.animations.play('jumpLeft');
+			}
+			
+			else {
+				this.player.animations.play('jumpRight');
+			}
 		}
 	}	
 };
